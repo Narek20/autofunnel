@@ -7,14 +7,14 @@ interface IProps {
   name: string
   bonus: number
   email: string
-  progress: number
   image?: string
 }
 
-const AccountCard: FC<IProps> = ({ name, bonus, progress, email, image }) => {
-  const [progressPercentage, setProgressPercentage] = useState(progress)
-  const [bonusAmount, setBonusAmount] = useState(bonus)
+const AccountCard: FC<IProps> = ({ name, bonus, email, image }) => {
   const [imageUrl, setImageUrl] = useState(image)
+  const [bonusAmount, setBonusAmount] = useState(bonus)
+  const [progressPercentage, setProgressPercentage] = useState(0)
+  const [isBonusAvailable, setIsBonusAvailable] = useState(true)
 
   const { accounts, setAccounts } = useContext(AccountContext)
 
@@ -43,10 +43,6 @@ const AccountCard: FC<IProps> = ({ name, bonus, progress, email, image }) => {
     setAccounts(accounts.filter((account) => account.email !== email))
   }
 
-  const handleProgress = () => {
-    setProgressPercentage((prevProgress) => Math.min(prevProgress + 20, 100))
-  }
-
   useEffect(() => {
     setAccounts(
       accounts.map((account) =>
@@ -61,6 +57,21 @@ const AccountCard: FC<IProps> = ({ name, bonus, progress, email, image }) => {
       )
     )
   }, [bonusAmount, imageUrl, progressPercentage])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setProgressPercentage((prevProgress) => {
+        const newProgress = Math.min(prevProgress + 1, 100)
+        if (newProgress === 100) {
+          clearInterval(interval)
+          setIsBonusAvailable(false)
+        }
+        return newProgress
+      })
+    }, 100)
+
+    return () => clearInterval(interval)
+  }, [])
 
   return (
     <div className={styles.accountCard}>
@@ -83,7 +94,11 @@ const AccountCard: FC<IProps> = ({ name, bonus, progress, email, image }) => {
             <span className={styles.label}>Email:</span>
             <span className={styles.info}>{email}</span>
           </div>
-          <button className={styles.bonusBtn} onClick={handleAddBonus}>
+          <button
+            className={styles.bonusBtn}
+            onClick={handleAddBonus}
+            disabled={!isBonusAvailable}
+          >
             Add bonus
           </button>
         </div>
@@ -109,13 +124,15 @@ const AccountCard: FC<IProps> = ({ name, bonus, progress, email, image }) => {
           </div>
         </div>
       </div>
-      <div className={styles.progress} onClick={handleProgress}>
-        <div
-          className={styles.indicator}
-          style={{ width: `${progressPercentage}%` }}
-        ></div>
-        <span className={styles.label}>Progress {progressPercentage}%</span>
-      </div>
+      {isBonusAvailable && (
+        <div className={styles.progress}>
+          <div
+            className={styles.indicator}
+            style={{ width: `${progressPercentage}%` }}
+          ></div>
+          <span className={styles.label}>Progress {progressPercentage}%</span>
+        </div>
+      )}
     </div>
   )
 }

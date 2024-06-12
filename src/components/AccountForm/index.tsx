@@ -25,7 +25,7 @@ const AccountForm = () => {
     }
 
     setErrorMessage('')
-    setAccounts([...accounts, { name, email, progress: 0, bonus: 0 }])
+    setAccounts([...accounts, { name, email, bonus: 0 }])
     setEmail('')
     setName('')
   }

@@ -12,6 +12,5 @@ export interface IAcount {
   name: string;
   email: string;
   bonus: number;
-  progress: number
   image?: string
 }
