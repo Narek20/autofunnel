@@ -10,6 +10,9 @@ function App() {
 
   return (
     <div className="App">
+      <div className="mobileBonusContainer">
+          <span>Total Bonuses: {totalBonuses}</span>
+        </div>
       <AccountForm />
       <div className="accounts">
         <div className="bonusContainer">

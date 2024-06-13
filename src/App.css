@@ -9,7 +9,6 @@
   display: flex;
   flex-direction: column;
   gap: 10px
-  ;
 }
 
 .bonusContainer {
@@ -18,8 +17,23 @@
   justify-content: flex-end;
 }
 
+.mobileBonusContainer {
+  display: none;
+
+}
+
 @media only screen and (max-width: 1000px) {
   .App {
     flex-direction: column;
+
+    .bonusContainer {
+      display: none;
+    }
+
+    .mobileBonusContainer {
+      display: flex;
+      width: 100%;
+      justify-content: flex-end;
+    }
   }
 }

@@ -104,6 +104,12 @@ const AccountCard: FC<IProps> = ({ name, bonus, email, image }) => {
         </div>
         <div>
           <div className={styles.uploadContainer} onClick={handleUploadClick}>
+          <input
+                  type="file"
+                  ref={fileInputRef}
+                  hidden
+                  onChange={handleUpload}
+                />
             {imageUrl ? (
               <img
                 className={styles.image}
@@ -112,12 +118,7 @@ const AccountCard: FC<IProps> = ({ name, bonus, email, image }) => {
               />
             ) : (
               <>
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  hidden
-                  onChange={handleUpload}
-                />
+                
                 <span>Upload Photo</span>
               </>
             )}
